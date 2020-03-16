@@ -338,7 +338,7 @@ int main() {
 		(unsigned int)((endTime - startTime) * (1000000000 / REPEAT_COUNT)));
 
 #ifdef __linux__ 
-	getchar();
+	(void)getchar();
 #elif defined(_WIN32)    
 	system("pause");
 #else
