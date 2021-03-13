@@ -1,12 +1,14 @@
 /**************************************************************
 * N.Kozak // Lviv'2020 // ACM // Dynamic programming examples *
-*    file: acmhw8.c                                           *
+*    file: acmhw7.c                                           *
 ***************************************************************/
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <math.h> 
 #include <time.h>
+
+#define NANOSECONDS_PER_SECOND_NUMBER 1000000000
 
 #define TASK TASK_A
 //#define TASK TASK_B
@@ -27,8 +29,6 @@
 #define REPEATOR_PREPARE unsigned int indexIteration;
 #define REPEATOR(count, code) \
 for (indexIteration = (count); indexIteration--;){ code; }
-#define TWO_VALUES_SELECTOR(variable, firstValue, secondValue) \
-	(variable) = indexIteration % 2 ? (firstValue) : (secondValue);
 
 float getCurrentTime(){
 	clock_t time = clock();
@@ -319,7 +319,7 @@ int main() {
 	endTime = getCurrentTime();
 	printResult((char*)"run by dynamic programming strategy",			
 		uArr,			
-		(unsigned int)((endTime - startTime) * (1000000000 / REPEAT_COUNT)));
+		(unsigned int)((endTime - startTime) * (NANOSECONDS_PER_SECOND_NUMBER / REPEAT_COUNT)));
 		
 	// full search		
 	startTime = getCurrentTime();
@@ -335,11 +335,11 @@ int main() {
 	endTime = getCurrentTime();		
 	printResult((char*)"search",			
 		uArr,			
-		(unsigned int)((endTime - startTime) * (1000000000 / REPEAT_COUNT)));
+		(unsigned int)((endTime - startTime) * (NANOSECONDS_PER_SECOND_NUMBER / REPEAT_COUNT)));
 
-#ifdef __linux__ 
+#if defined(__linux__) || defined(__unix__) || defined(__APPLE__) 
 	(void)getchar();
-#elif defined(_WIN32)    
+#elif defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(__NT__)    
 	system("pause");
 #else
 #endif
