@@ -83,13 +83,13 @@ unsigned int rule2_DPS(void * const uArr, unsigned int subsetM, unsigned int ind
 		*valueRule = ~0;
 	}
 
-	if ((level && !valueF[subsetM][level][1]) && *valueRule < (valueF[subsetM][level][1] + index)){
+	if (valueF[subsetM][level][1] == ~0 || (!level && valueF[subsetM][level][0] != subsetM) || *valueRule < (valueF[subsetM][level][1] + index)) {
 		valueF[subsetM][level][0] = *betterIndex;
 		valueF[subsetM][level][1] = *valueRule;
 	}
-	else{
+	else {
 		valueF[subsetM][level][1] += index/* * uNK0NK1NK2[level][1]*/;
-		
+
 		*betterIndex = valueF[subsetM][level][0];
 		*valueRule = valueF[subsetM][level][1];
 	}
@@ -119,6 +119,8 @@ int run_by_dynamic_programming_strategy(void * const uArr, void * context, unsig
 	}
 
 	for (subsetM = 0; subsetM <= *uM; ++subsetM){
+		valueF[subsetM][level][0] = 0;
+		valueF[subsetM][level][1] = ~0; // index;
 		for (index = 0, prevBetterIndex = 0, prevMax1 = 0; (vK = index * uNK0NK1NK2[level][0]) <= subsetM; ++index){
 			valueF[subsetM][level][0] = vK; // index;
 			if (level){
@@ -135,6 +137,7 @@ int run_by_dynamic_programming_strategy(void * const uArr, void * context, unsig
 
 	if (level + 1 == *uVC){
 		*uScore = valueF[nextSubset][*uVC - 1][1];
+		!~*uScore ? ++ * uScore : 0; // no result(~0) fix 		
 		for (index = T; index --> 0;){
 			nextSubset -= uResult[index] = valueF[nextSubset][index][0];
 			uResult[index] /= uNK0NK1NK2[index][0];
@@ -250,10 +253,18 @@ void printResult(char * const title, void * const uArr, unsigned int runTime){
 
 	printf("\r\n%s: ", title);
 	printf("\r\nValues: ");
-	for (index = 0; index < *uVC; ++index){
-		printf("X%d=%d ", index, uResult[index]);
+	if (*uScore) {
+		for (index = 0; index < *uVC; ++index) {
+			printf("X%d=%d ", index, uResult[index]);
+		}
+		printf("\r\n Score: %d \r\n", *uScore);
 	}
-	printf("\r\n Score: %d \r\n", *uScore);
+	else {
+		for (index = 0; index < *uVC; ++index) {
+			printf("X%d=? ", index);
+		}
+		printf("\r\n No solution found \r\n");
+	}
 	
 	printf("run time: %dns\r\n\r\n", runTime);	
 }
