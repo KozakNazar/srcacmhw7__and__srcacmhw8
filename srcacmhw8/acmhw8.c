@@ -1,6 +1,6 @@
 /**************************************************************
 * N.Kozak // Lviv'2020 // ACM // Dynamic programming examples *
-*    file: acmhw7.c                                           *
+*    file: acmhw8.c (based on acmhw7.c)                       *
 ***************************************************************/
 #include <stdio.h>
 #include <stdlib.h>
